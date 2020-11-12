@@ -27,6 +27,10 @@ public class Member {
 
 	private Long orgMemberId;
 
+	public MemberKey getMemberKey() {
+		return new MemberKey(companyId, memberType, orgMemberId);
+	}
+
 	public Member(
 		String companyId,
 		MemberType memberType,

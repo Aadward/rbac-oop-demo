@@ -64,14 +64,15 @@ public class AuthorizeTest extends BaseSpringBootTest {
 		member.grantRole(securityManager);
 		memberRepository.save(member);
 
+
+		MemberKey memberKey = member.getMemberKey();
 		/*
 			Check auth for user
 		 */
-		Member persistUser = memberRepository.selectByMemberKey(new MemberKey(companyId, MemberType.USER, userId));
 		// has auth for security menu
-		assertThat(authService.hasFullAuthForMenu(persistUser, Menu.SECURITY)).isTrue();
+		assertThat(authService.hasFullAuthForMenu(memberKey, Menu.SECURITY)).isTrue();
 		// has auth for sub-menu: security_network_setting
-		assertThat(authService.hasFullAuthForMenu(persistUser, Menu.SECURITY_NETWORK_SETTING)).isTrue();
+		assertThat(authService.hasFullAuthForMenu(memberKey, Menu.SECURITY_NETWORK_SETTING)).isTrue();
 	}
 
 	@Test
@@ -93,9 +94,9 @@ public class AuthorizeTest extends BaseSpringBootTest {
 		/*
 			Grant role to group
 		 */
-		Member member = new Member(companyId, MemberType.GROUP, groupId);
-		member.grantRole(securityManager);
-		memberRepository.save(member);
+		Member groupMember = new Member(companyId, MemberType.GROUP, groupId);
+		groupMember.grantRole(securityManager);
+		memberRepository.save(groupMember);
 
 		/*
 			Give user no role
@@ -107,20 +108,19 @@ public class AuthorizeTest extends BaseSpringBootTest {
 		/*
 			Prepare mock
 		 */
-		MemberKey userKey = new MemberKey(companyId, MemberType.USER, userId);
-		MemberKey groupKey = new MemberKey(companyId, MemberType.GROUP, groupId);
-
 		given(memberBelongService.memberBelongTo(any()))
-			.willReturn(Lists.newArrayList(groupKey));
+			.willReturn(Lists.newArrayList(groupMember.getMemberKey()));
+
+
 
 		/*
 			Check auth for user
 		 */
-		Member persistUser = memberRepository.selectByMemberKey(userKey);
+		MemberKey memberKey = userMember.getMemberKey();
 		// has auth for security menu
-		assertThat(authService.hasFullAuthForMenu(persistUser, Menu.SECURITY)).isTrue();
+		assertThat(authService.hasFullAuthForMenu(memberKey, Menu.SECURITY)).isTrue();
 		// has auth for sub-menu: security_network_setting
-		assertThat(authService.hasFullAuthForMenu(persistUser, Menu.SECURITY_NETWORK_SETTING)).isTrue();
+		assertThat(authService.hasFullAuthForMenu(memberKey, Menu.SECURITY_NETWORK_SETTING)).isTrue();
 	}
 
 }

@@ -28,20 +28,25 @@ public class MemberService {
 	private final MemberBelongService memberBelongService;
 	private final MemberRepository memberRepository;
 
-	public boolean hasFullAuthForMenu(Member member, Menu menu) {
-		return hasAuth(member, new Resource(ResourceType.MENU, menu.getResourceKey()), AuthType.FULL);
+	public boolean hasFullAuthForMenu(MemberKey memberKey, Menu menu) {
+		return hasAuth(memberKey, new Resource(ResourceType.MENU, menu.getResourceKey()), AuthType.FULL);
 	}
 
-	public boolean hasAuth(Member member, Resource resource, AuthType authType) {
+	public boolean hasAuth(MemberKey memberKey, Resource resource, AuthType authType) {
 		// check auth for itself
+		Member member = memberRepository.selectByMemberKey(memberKey);
+		if (member == null) {
+			return false;
+		}
+
 		Auth targetAuth = new Auth(authType, resource);
 		if (memberHasAuth(member, targetAuth)) {
 			return true;
 		}
 
 		// check for its group and dept
-		for (MemberKey memberKey : memberBelongService.memberBelongTo(member)) {
-			Member m1 = memberRepository.selectByMemberKey(memberKey);
+		for (MemberKey otherMemberKey : memberBelongService.memberBelongTo(member)) {
+			Member m1 = memberRepository.selectByMemberKey(otherMemberKey);
 			if (memberHasAuth(m1, targetAuth)) {
 				return true;
 			}
