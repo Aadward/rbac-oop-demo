@@ -6,11 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import com.syh.example.rbacoopdemo.roleauth.member.Member;
+import com.syh.example.rbacoopdemo.roleauth.member.MemberKey;
 import com.syh.example.rbacoopdemo.roleauth.member.MemberType;
 import com.syh.example.rbacoopdemo.roleauth.member.repository.mapper.MemberDao;
 import com.syh.example.rbacoopdemo.roleauth.member.repository.mapper.MemberRoleDao;
-import com.syh.example.rbacoopdemo.roleauth.member.repository.po.MemberRolePo;
 import com.syh.example.rbacoopdemo.roleauth.member.repository.po.MemberPo;
+import com.syh.example.rbacoopdemo.roleauth.member.repository.po.MemberRolePo;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -42,14 +43,21 @@ public class MemberRepository {
 
 	}
 
-	public Member selectByTypeAndId(MemberType type, Long id) {
-		MemberPo memberPo = memberDao.selectByTypeAndOrgMemberId(type, id);
+	public Member selectByMemberKey(MemberKey key) {
+		MemberPo memberPo = memberDao.selectByCompanyIdAndTypeAndOrgMemberId(key.getCompanyId(),
+			key.getMemberType(), key.getOrgMemberId());
+
 		List<Long> roleIds = memberRoleDao.selectByMemberId(memberPo.getId())
 			.stream()
 			.map(MemberRolePo::getRoleId)
 			.collect(Collectors.toList());
 
-		return new Member(memberPo.getId(),memberPo.getCompanyId(), type, id, roleIds);
+		return new Member(
+			memberPo.getId(),
+			memberPo.getCompanyId(),
+			MemberType.valueOf(memberPo.getMemberType()),
+			memberPo.getOrgMemberId(),
+			roleIds);
 
 	}
 }

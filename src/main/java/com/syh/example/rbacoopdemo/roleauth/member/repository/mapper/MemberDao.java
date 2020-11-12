@@ -15,10 +15,12 @@ import com.syh.example.rbacoopdemo.roleauth.member.repository.po.MemberPo;
 @Component
 public class MemberDao extends ServiceImpl<MemberMapper, MemberPo> {
 
-	public MemberPo selectByTypeAndOrgMemberId(MemberType memberType,
+	public MemberPo selectByCompanyIdAndTypeAndOrgMemberId(String companyId,
+		MemberType memberType,
 		Long orgMemberId) {
 
 		return query()
+			.eq("company_id", companyId)
 			.eq("member_type", memberType.name())
 			.eq("org_member_id", orgMemberId)
 			.one();
