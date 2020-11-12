@@ -1,4 +1,4 @@
-package com.syh.example.rbacoopdemo.roleauth.member.service;
+package com.syh.example.rbacoopdemo.roleauth.member.external;
 
 import java.util.List;
 
@@ -37,10 +37,12 @@ class MemberBelongServiceImpl implements MemberBelongService {
 	}
 
 	private List<Long> getGroupIds() {
+		// get groups
 		return Lists.newArrayList();
 	}
 
 	private List<Long> getDepts() {
+		// get depts
 		return Lists.newArrayList();
 	}
 }

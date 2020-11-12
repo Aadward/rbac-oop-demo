@@ -1,4 +1,4 @@
-package com.syh.example.rbacoopdemo.roleauth.member.service;
+package com.syh.example.rbacoopdemo.roleauth.member.external;
 
 import java.util.List;
 
