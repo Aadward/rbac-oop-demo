@@ -1,0 +1,12 @@
+spring:
+  profiles.active: test
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  datasource:
+    url: "jdbc:h2:mem:cms;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL"
+    username:
+    password:
+    driverClassName: "org.h2.Driver"
+    maxActive: 50
+    initialization-mode: always
