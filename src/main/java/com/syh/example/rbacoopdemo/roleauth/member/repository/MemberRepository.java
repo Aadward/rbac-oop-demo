@@ -27,6 +27,7 @@ public class MemberRepository {
 
 	public void save(Member member) {
 		MemberPo memberPo = new MemberPo(member.getId(),
+			member.getCompanyId(),
 			member.getMemberType().name(),
 			member.getOrgMemberId());
 
@@ -48,7 +49,7 @@ public class MemberRepository {
 			.map(MemberRolePo::getRoleId)
 			.collect(Collectors.toList());
 
-		return new Member(memberPo.getId(), type, id, roleIds);
+		return new Member(memberPo.getId(),memberPo.getCompanyId(), type, id, roleIds);
 
 	}
 }

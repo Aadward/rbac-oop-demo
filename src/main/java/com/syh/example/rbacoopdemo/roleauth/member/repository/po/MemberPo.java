@@ -22,6 +22,9 @@ public class MemberPo {
 	@TableId("id")
 	private Long id;
 
+	@TableField("company_id")
+	private String companyId;
+
 	@TableField("member_type")
 	private String memberType;
 

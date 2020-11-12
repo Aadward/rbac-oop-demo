@@ -22,6 +22,9 @@ public class RolePo {
 	@TableId(value = "id")
 	private Long id;
 
+	@TableField(value = "company_id")
+	private String companyId;
+
 	@TableField(value = "name")
 	private String name;
 }

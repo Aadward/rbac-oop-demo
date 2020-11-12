@@ -37,18 +37,22 @@ public class AuthorizeTest extends BaseSpringBootTest {
 	@Test
 	@FlywayTest
 	public void authorizeSecurityManagerToUser() throws Exception {
+
+		String companyId = "test_company";
+		Long userId = 1L;
+
+
 		/*
 			Init role: Security Manager
 		 */
 		Auth securityAuth = Auth.fullAuthForMenu(Menu.SECURITY);
-		Role securityManager = new Role(1L, "Security Manager", Lists.newArrayList(securityAuth));
+		Role securityManager = Role.create(companyId, "Security Manager", Lists.newArrayList(securityAuth));
 		roleRepository.save(securityManager);
 
 		/*
 			Grant role to user
 		 */
-		Long userId = 1L;
-		Member user = new Member(MemberType.USER, userId);
+		Member user = new Member(companyId, MemberType.USER, userId);
 		user.grantRole(securityManager);
 		memberRepository.save(user);
 

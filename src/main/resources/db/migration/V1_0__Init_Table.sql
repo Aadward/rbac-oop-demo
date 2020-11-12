@@ -1,8 +1,9 @@
 CREATE TABLE `role`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` varchar(100) NOT NULL,
   `name` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uk_role_name`(`name`)
+  UNIQUE INDEX `uk_company_id_role_name`(`company_id`, `name`)
 );
 
 CREATE TABLE `role_auth` (
@@ -17,9 +18,11 @@ CREATE TABLE `role_auth` (
 
 CREATE TABLE `member` (
     `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `company_id` varchar(100) NOT NULL,
     `member_type` varchar(100) NOT NULL,
     `org_member_id` bigint(20) UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `uk_id_type_org_id` (`company_id`, `member_type`, `org_member_id`)
 );
 
 CREATE TABLE `member_role` (

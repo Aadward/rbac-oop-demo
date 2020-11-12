@@ -32,7 +32,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 		if (roleIds.isEmpty()) {
 			return Lists.newArrayList();
 		}
-		
+
 		List<RolePo> rolePos = roleDao.getBaseMapper().selectBatchIds(roleIds);
 
 		return rolePos.stream()
@@ -41,14 +41,14 @@ public class RoleRepositoryImpl implements RoleRepository {
 					.stream()
 					.map(RoleAuthPo::toAuth)
 					.collect(Collectors.toList());
-				return new Role(rolePo.getId(), rolePo.getName(), authList);
+				return new Role(rolePo.getId(), rolePo.getCompanyId(), rolePo.getName(), authList);
 			})
 			.collect(Collectors.toList());
 	}
 
 	@Override
 	public void save(Role role) {
-		RolePo rolePo = new RolePo(role.getId(), role.getName());
+		RolePo rolePo = new RolePo(role.getId(), role.getCompanyId(), role.getName());
 		roleDao.saveOrUpdate(rolePo);
 
 		List<RoleAuthPo> roleAuthPos = role.getAuthList()
