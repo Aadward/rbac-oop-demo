@@ -12,5 +12,5 @@ import com.syh.example.rbacoopdemo.roleauth.member.MemberKey;
  **/
 public interface MemberBelongService {
 
-	List<MemberKey> memberBelongTo(Member member);
+	List<MemberKey> memberBelongTo(MemberKey memberKey);
 }
